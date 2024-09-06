@@ -1,0 +1,17 @@
+{
+  "name": "mandoline-tutorials",
+  "version": "0.1.1",
+  "description": "Mandoline Tutorials",
+  "type": "module",
+  "scripts": {
+    "quick-start": "node --env-file=.env quick-start.js",
+    "prompt-engineering": "node --env-file=.env prompt-engineering.js",
+    "model-selection": "node --env-file=.env model-selection.js",
+    "get-metrics": "node --env-file=.env get-metrics.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.26.1",
+    "mandoline": "0.1.1",
+    "openai": "^4.56.0"
+  }
+}
