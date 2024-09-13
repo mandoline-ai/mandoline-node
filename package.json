@@ -19,6 +19,7 @@
     "metrics",
     "ai"
   ],
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
