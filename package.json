@@ -1,6 +1,6 @@
 {
   "name": "mandoline",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Official Node.js client for the Mandoline API",
   "author": "Mandoline AI <support@mandoline.ai>",
   "license": "Apache-2.0",
@@ -19,6 +19,7 @@
     "metrics",
     "ai"
   ],
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -27,7 +28,9 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "build": "tsc",
