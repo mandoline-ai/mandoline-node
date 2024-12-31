@@ -115,4 +115,4 @@ For detailed information about the available methods and their parameters, pleas
 
 ## License
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0. See the [LICENSE](https://github.com/mandoline-ai/mandoline-node/blob/9350deaff94bd8b572d3d312cf5d158a93b12238/LICENSE) file for details.
