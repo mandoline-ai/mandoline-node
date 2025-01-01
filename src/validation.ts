@@ -100,6 +100,18 @@ function checkAtLeastOneFieldGiven(obj: Record<string, any>): void {
   }
 }
 
+function validateImageFormat(image: string): void {
+  if (typeof image !== "string") {
+    throw new ValidationError("Image must be a string");
+  }
+  if (!image.startsWith("data:image/")) {
+    throw new ValidationError("Image must start with data:image/");
+  }
+  if (!image.includes(";base64,")) {
+    throw new ValidationError("Image must be base64 encoded");
+  }
+}
+
 export function validateMetricCreate(metric: MetricCreate): void {
   validateString(metric.name, "Metric name");
   validateString(metric.description, "Metric description");
@@ -154,7 +166,40 @@ export function validateMetricUpdate(update: MetricUpdate): void {
 export function validateEvaluationCreate(evaluation: EvaluationCreate): void {
   validateId(evaluation.metricId, "Evaluation metricId");
   validateString(evaluation.prompt, "Evaluation prompt");
-  validateString(evaluation.response, "Evaluation response");
+
+  // Validate image format if provided
+  if (evaluation.prompt_image !== undefined) {
+    validateImageFormat(evaluation.prompt_image);
+  }
+  if (evaluation.response_image !== undefined) {
+    validateImageFormat(evaluation.response_image);
+  }
+
+  // Validate response requirements
+  if (
+    evaluation.response === undefined &&
+    evaluation.response_image === undefined
+  ) {
+    throw new ValidationError(
+      "Either response or response_image must be provided"
+    );
+  }
+
+  // Ensure response is undefined only with images
+  if (
+    evaluation.response === undefined &&
+    !(evaluation.prompt_image || evaluation.response_image)
+  ) {
+    throw new ValidationError(
+      "Response can only be undefined when images are provided"
+    );
+  }
+
+  // Validate response if provided
+  if (evaluation.response !== undefined) {
+    validateString(evaluation.response, "Evaluation response");
+  }
+
   if (evaluation.properties !== undefined) {
     validateNullableSerializableDict(
       evaluation.properties,
