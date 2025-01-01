@@ -217,7 +217,9 @@ describe("Mandoline", () => {
       const evaluations = await mandoline.evaluate(
         metrics,
         "Test prompt",
+        undefined,
         "Test response",
+        undefined,
         { key: "value" }
       );
 
@@ -329,6 +331,107 @@ describe("Mandoline", () => {
           response: "Test response",
         })
       ).rejects.toThrow(ValidationError);
+    });
+
+    describe("createEvaluation image validation", () => {
+      const validMetricId = "23f156f6-0572-43a3-a27a-b95724343910";
+      const validDataUri =
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg==";
+
+      // Mock successful response data
+      const mockEvaluationResponse = {
+        id: "23f156f6-0572-43a3-a27a-b95724343910",
+        metricId: validMetricId,
+        prompt: "Test prompt",
+        response: "Test response",
+        prompt_image: validDataUri,
+        response_image: validDataUri,
+        score: 0.42,
+        createdAt: "2023-01-01T00:00:00Z",
+        updatedAt: "2023-01-01T00:00:00Z",
+      };
+
+      // Set up mock response for successful cases
+      beforeEach(() => {
+        mockedFetch.mockResolvedValue(new MockResponse(mockEvaluationResponse));
+      });
+
+      test("accepts valid data URI images", async () => {
+        await expect(
+          mandoline.createEvaluation({
+            metricId: validMetricId,
+            prompt: "Test prompt",
+            prompt_image: validDataUri,
+            response: "Test response",
+            response_image: validDataUri,
+          })
+        ).resolves.toBeDefined();
+        expect(mockedFetch).toHaveBeenCalledTimes(1);
+      });
+
+      test("rejects non-data URI images", async () => {
+        await expect(
+          mandoline.createEvaluation({
+            metricId: validMetricId,
+            prompt: "Test prompt",
+            prompt_image: "https://example.com/image.png",
+            response: "Test response",
+          })
+        ).rejects.toThrow(ValidationError);
+      });
+
+      test("rejects non-image data URIs", async () => {
+        await expect(
+          mandoline.createEvaluation({
+            metricId: validMetricId,
+            prompt: "Test prompt",
+            prompt_image: "data:text/plain;base64,SGVsbG8gd29ybGQ=",
+            response: "Test response",
+          })
+        ).rejects.toThrow(ValidationError);
+      });
+
+      test("requires either response or response_image", async () => {
+        await expect(
+          mandoline.createEvaluation({
+            metricId: validMetricId,
+            prompt: "Test prompt",
+            prompt_image: validDataUri,
+          })
+        ).rejects.toThrow(ValidationError);
+      });
+
+      test("allows response to be undefined when images are provided", async () => {
+        await expect(
+          mandoline.createEvaluation({
+            metricId: validMetricId,
+            prompt: "Test prompt",
+            prompt_image: validDataUri,
+            response_image: validDataUri,
+          })
+        ).resolves.toBeDefined();
+        expect(mockedFetch).toHaveBeenCalledTimes(1);
+      });
+
+      test("requires response when no images are provided", async () => {
+        await expect(
+          mandoline.createEvaluation({
+            metricId: validMetricId,
+            prompt: "Test prompt",
+          })
+        ).rejects.toThrow(ValidationError);
+      });
+
+      test("rejects malformed base64 in data URI", async () => {
+        await expect(
+          mandoline.createEvaluation({
+            metricId: validMetricId,
+            prompt: "Test prompt",
+            prompt_image: "data:image/png,not-base64-data",
+            response: "Test response",
+          })
+        ).rejects.toThrow(ValidationError);
+      });
     });
   });
 

@@ -186,14 +186,18 @@ export class Mandoline {
   async evaluate(
     metrics: Metric[],
     prompt: string,
-    response: string,
+    prompt_image?: string,
+    response?: string,
+    response_image?: string,
     properties?: NullableSerializableDict
   ): Promise<Evaluation[]> {
     const evaluationPromises = metrics.map(async (metric) => {
       const evaluationCreate: EvaluationCreate = {
         metricId: metric.id,
         prompt,
+        prompt_image,
         response,
+        response_image,
         properties,
       };
       validateEvaluationCreate(evaluationCreate);
