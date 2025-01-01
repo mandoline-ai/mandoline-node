@@ -217,7 +217,9 @@ describe("Mandoline", () => {
       const evaluations = await mandoline.evaluate(
         metrics,
         "Test prompt",
+        undefined,
         "Test response",
+        undefined,
         { key: "value" }
       );
 
