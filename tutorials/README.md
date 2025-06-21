@@ -8,6 +8,7 @@ This directory contains tutorials and examples for using the Mandoline Node.js c
 2. `prompt-engineering.js`: An example of using Mandoline for prompt engineering tasks.
 3. `model-selection.js`: A tutorial on comparing different language models using Mandoline.
 4. `get-metrics.js`: A simple demo that fetches all metrics with a "personality" tag.
+5. `vision-evaluation.js`: A tutorial on how to run a vision eval with Mandoline.
 
 ## Setup
 
@@ -40,6 +41,7 @@ npm run quick-start
 npm run prompt-engineering
 npm run model-selection
 npm run get-metrics
+npm run vision-evaluation
 ```
 
 ## Modifying the Tutorials
