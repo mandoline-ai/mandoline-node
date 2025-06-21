@@ -7,7 +7,8 @@
     "quick-start": "node --env-file=.env quick-start.js",
     "prompt-engineering": "node --env-file=.env prompt-engineering.js",
     "model-selection": "node --env-file=.env model-selection.js",
-    "get-metrics": "node --env-file=.env get-metrics.js"
+    "get-metrics": "node --env-file=.env get-metrics.js",
+    "vision-evaluation": "node --env-file=.env vision-evaluation.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.26.1",
