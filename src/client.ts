@@ -179,7 +179,9 @@ export class Mandoline {
    * Performs evaluations across multiple metrics for a given prompt-response pair.
    * @param metrics - The list of metrics to evaluate against
    * @param prompt - The prompt to evaluate
-   * @param response - The response to evaluate
+   * @param prompt_image - Optional image associated with the prompt
+   * @param response - The response to evaluate. Can be undefined only when images are provided
+   * @param response_image - Optional image associated with the response
    * @param properties - Optional properties to include with the evaluation
    * @returns A promise that resolves to an array of created Evaluations
    */
