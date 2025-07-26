@@ -202,7 +202,7 @@ export class Mandoline {
 
   /**
    * Performs evaluations across multiple metrics for a given prompt-response pair (convenience method).
-   * @param metrics - The list of metrics to evaluate against
+   * @param metricIds - The list of metric IDs to evaluate against
    * @param prompt - The prompt to evaluate
    * @param prompt_image - Optional image associated with the prompt
    * @param response - The response to evaluate. Can be undefined only when images are provided
@@ -211,16 +211,16 @@ export class Mandoline {
    * @returns A promise that resolves to an array of created Evaluations
    */
   async batchCreateEvaluations(
-    metrics: Metric[],
+    metricIds: UUID[],
     prompt: string,
     prompt_image?: string,
     response?: string,
     response_image?: string,
     properties?: NullableSerializableDict
   ): Promise<Evaluation[]> {
-    const evaluationPromises = metrics.map(async (metric) => {
+    const evaluationPromises = metricIds.map(async (metricId) => {
       const evaluationCreate: EvaluationCreate = {
-        metricId: metric.id,
+        metricId,
         prompt,
         prompt_image,
         response,
