@@ -191,6 +191,16 @@ export class Mandoline {
   }
 
   /**
+   * Performs an evaluation for a single metric on a prompt-response pair.
+   * @param evaluation - The evaluation to create
+   * @returns A promise that resolves to the created Evaluation
+   */
+  async createEvaluation(evaluation: EvaluationCreate): Promise<Evaluation> {
+    validateEvaluationCreate(evaluation);
+    return this.post<Evaluation>("evaluations/", evaluation);
+  }
+
+  /**
    * Performs evaluations across multiple metrics for a given prompt-response pair (convenience method).
    * @param metrics - The list of metrics to evaluate against
    * @param prompt - The prompt to evaluate
@@ -222,16 +232,6 @@ export class Mandoline {
     });
 
     return await Promise.all(evaluationPromises);
-  }
-
-  /**
-   * Performs an evaluation for a single metric on a prompt-response pair.
-   * @param evaluation - The evaluation to create
-   * @returns A promise that resolves to the created Evaluation
-   */
-  async createEvaluation(evaluation: EvaluationCreate): Promise<Evaluation> {
-    validateEvaluationCreate(evaluation);
-    return this.post<Evaluation>("evaluations/", evaluation);
   }
 
   /**
