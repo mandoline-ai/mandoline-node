@@ -1,6 +1,7 @@
 import {
   CONNECT_TIMEOUT,
   DEFAULT_GET_LIMIT,
+  DEFAULT_INCLUDE_EVALUATION_CONTENT,
   MANDOLINE_API_BASE_URL,
   MAX_GET_LIMIT,
   RWP_TIMEOUT,
@@ -238,6 +239,7 @@ export class Mandoline {
     skip?: number;
     limit?: number;
     metricId?: UUID;
+    includeContent?: boolean;
     properties?: NullableSerializableDict;
     filters?: SerializableDict;
   }): Promise<Evaluation[]> {
@@ -278,6 +280,7 @@ interface GetOptions {
   limit?: number;
   tags?: NullableStringArray;
   metricId?: UUID;
+  includeContent?: boolean;
   properties?: NullableSerializableDict;
   filters?: SerializableDict;
 }
@@ -289,6 +292,10 @@ export function processGetOptions(
     skip: options?.skip ?? 0,
     limit: options?.limit ?? DEFAULT_GET_LIMIT,
   };
+
+  if (options?.includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
+    params.include_content = options.includeContent;
+  }
 
   const filters: SerializableDict = {};
 

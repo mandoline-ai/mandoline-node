@@ -212,6 +212,7 @@ export function validateEvaluationsGet(options?: {
   skip?: number;
   limit?: number;
   metricId?: UUID;
+  includeContent?: boolean;
   properties?: NullableSerializableDict;
   filters?: SerializableDict;
 }): void {
