@@ -8,7 +8,7 @@ import {
   RWP_TIMEOUT,
 } from "../src/config";
 import { MandolineError, ValidationError } from "../src/errors";
-import type { Metric } from "../src/models";
+import type { UUID } from "../src/types";
 
 jest.mock("node-fetch");
 
@@ -197,25 +197,13 @@ describe("Mandoline", () => {
     });
 
     test("evaluate", async () => {
-      const metrics: Metric[] = [
-        {
-          id: "ae503bed-4ee9-490e-bc4b-ff1e749d6ff4",
-          name: "Metric 1",
-          description: "",
-          createdAt: "",
-          updatedAt: "",
-        },
-        {
-          id: "73210187-84bc-4b95-ae75-5de0ad0e937c",
-          name: "Metric 2",
-          description: "",
-          createdAt: "",
-          updatedAt: "",
-        },
+      const metricIds: UUID[] = [
+        "ae503bed-4ee9-490e-bc4b-ff1e749d6ff4",
+        "73210187-84bc-4b95-ae75-5de0ad0e937c",
       ];
 
-      const evaluations = await mandoline.evaluate(
-        metrics,
+      const evaluations = await mandoline.batchCreateEvaluations(
+        metricIds,
         "Test prompt",
         undefined,
         "Test response",

@@ -130,6 +130,20 @@ export class Mandoline {
   }
 
   /**
+   * Creates multiple metrics in a batch (convenience method).
+   * @param metrics - The list of metrics to create
+   * @returns A promise that resolves to an array of created Metrics
+   */
+  async batchCreateMetrics(metrics: MetricCreate[]): Promise<Metric[]> {
+    const metricPromises = metrics.map(async (metric) => {
+      validateMetricCreate(metric);
+      return this.createMetric(metric);
+    });
+
+    return await Promise.all(metricPromises);
+  }
+
+  /**
    * Fetches a specific metric by its unique identifier.
    * @param metricId - The ID of the metric to fetch
    * @returns A promise that resolves to the requested Metric
@@ -177,8 +191,18 @@ export class Mandoline {
   }
 
   /**
-   * Performs evaluations across multiple metrics for a given prompt-response pair.
-   * @param metrics - The list of metrics to evaluate against
+   * Performs an evaluation for a single metric on a prompt-response pair.
+   * @param evaluation - The evaluation to create
+   * @returns A promise that resolves to the created Evaluation
+   */
+  async createEvaluation(evaluation: EvaluationCreate): Promise<Evaluation> {
+    validateEvaluationCreate(evaluation);
+    return this.post<Evaluation>("evaluations/", evaluation);
+  }
+
+  /**
+   * Performs evaluations across multiple metrics for a given prompt-response pair (convenience method).
+   * @param metricIds - The list of metric IDs to evaluate against
    * @param prompt - The prompt to evaluate
    * @param prompt_image - Optional image associated with the prompt
    * @param response - The response to evaluate. Can be undefined only when images are provided
@@ -186,17 +210,17 @@ export class Mandoline {
    * @param properties - Optional properties to include with the evaluation
    * @returns A promise that resolves to an array of created Evaluations
    */
-  async evaluate(
-    metrics: Metric[],
+  async batchCreateEvaluations(
+    metricIds: UUID[],
     prompt: string,
     prompt_image?: string,
     response?: string,
     response_image?: string,
     properties?: NullableSerializableDict
   ): Promise<Evaluation[]> {
-    const evaluationPromises = metrics.map(async (metric) => {
+    const evaluationPromises = metricIds.map(async (metricId) => {
       const evaluationCreate: EvaluationCreate = {
-        metricId: metric.id,
+        metricId,
         prompt,
         prompt_image,
         response,
@@ -208,16 +232,6 @@ export class Mandoline {
     });
 
     return await Promise.all(evaluationPromises);
-  }
-
-  /**
-   * Performs an evaluation for a single metric on a prompt-response pair.
-   * @param evaluation - The evaluation to create
-   * @returns A promise that resolves to the created Evaluation
-   */
-  async createEvaluation(evaluation: EvaluationCreate): Promise<Evaluation> {
-    validateEvaluationCreate(evaluation);
-    return this.post<Evaluation>("evaluations/", evaluation);
   }
 
   /**
