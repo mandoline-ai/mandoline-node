@@ -130,6 +130,20 @@ export class Mandoline {
   }
 
   /**
+   * Creates multiple metrics in a batch (convenience method).
+   * @param metrics - The list of metrics to create
+   * @returns A promise that resolves to an array of created Metrics
+   */
+  async batchCreateMetrics(metrics: MetricCreate[]): Promise<Metric[]> {
+    const metricPromises = metrics.map(async (metric) => {
+      validateMetricCreate(metric);
+      return this.createMetric(metric);
+    });
+
+    return await Promise.all(metricPromises);
+  }
+
+  /**
    * Fetches a specific metric by its unique identifier.
    * @param metricId - The ID of the metric to fetch
    * @returns A promise that resolves to the requested Metric
