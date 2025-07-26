@@ -1,6 +1,6 @@
 {
   "name": "mandoline",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Official Node.js client for the Mandoline API",
   "author": "Mandoline AI <support@mandoline.ai>",
   "license": "Apache-2.0",
