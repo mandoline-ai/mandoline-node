@@ -28,7 +28,7 @@ export interface Metric extends MetricBase, IDAndTimestampsMixin {}
 
 interface EvaluationBase {
   metricId: UUID;
-  prompt: string;
+  prompt?: string;
   prompt_image?: string;
   response?: string;
   response_image?: string;
