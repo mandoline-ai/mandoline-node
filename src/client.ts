@@ -238,6 +238,7 @@ export class Mandoline {
     skip?: number;
     limit?: number;
     metricId?: UUID;
+    includeContent?: boolean;
     properties?: NullableSerializableDict;
     filters?: SerializableDict;
   }): Promise<Evaluation[]> {
@@ -278,6 +279,7 @@ interface GetOptions {
   limit?: number;
   tags?: NullableStringArray;
   metricId?: UUID;
+  includeContent?: boolean;
   properties?: NullableSerializableDict;
   filters?: SerializableDict;
 }
