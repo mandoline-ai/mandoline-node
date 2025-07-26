@@ -191,7 +191,7 @@ export class Mandoline {
   }
 
   /**
-   * Performs evaluations across multiple metrics for a given prompt-response pair.
+   * Performs evaluations across multiple metrics for a given prompt-response pair (convenience method).
    * @param metrics - The list of metrics to evaluate against
    * @param prompt - The prompt to evaluate
    * @param prompt_image - Optional image associated with the prompt
@@ -200,7 +200,7 @@ export class Mandoline {
    * @param properties - Optional properties to include with the evaluation
    * @returns A promise that resolves to an array of created Evaluations
    */
-  async evaluate(
+  async batchCreateEvaluations(
     metrics: Metric[],
     prompt: string,
     prompt_image?: string,
