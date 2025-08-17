@@ -92,22 +92,29 @@ export class Mandoline {
 
   protected async post<T>(
     endpoint: string,
-    data: SerializableDict
+    data: SerializableDict,
+    params?: NullableSerializableDict
   ): Promise<T> {
     return makeRequest<T>(this.requestConfig, {
       method: "POST",
       endpoint,
       authHeader: this.getAuthHeader(),
       data,
+      params,
     });
   }
 
-  protected async put<T>(endpoint: string, data: SerializableDict): Promise<T> {
+  protected async put<T>(
+    endpoint: string,
+    data: SerializableDict,
+    params?: NullableSerializableDict
+  ): Promise<T> {
     return makeRequest<T>(this.requestConfig, {
       method: "PUT",
       endpoint,
       authHeader: this.getAuthHeader(),
       data,
+      params,
     });
   }
 
@@ -193,11 +200,19 @@ export class Mandoline {
   /**
    * Performs an evaluation for a single metric on a prompt-response pair.
    * @param evaluation - The evaluation to create
+   * @param includeContent - Whether to include content in the response
    * @returns A promise that resolves to the created Evaluation
    */
-  async createEvaluation(evaluation: EvaluationCreate): Promise<Evaluation> {
+  async createEvaluation(
+    evaluation: EvaluationCreate,
+    includeContent?: boolean
+  ): Promise<Evaluation> {
     validateEvaluationCreate(evaluation);
-    return this.post<Evaluation>("evaluations/", evaluation);
+    const params: NullableSerializableDict = {};
+    if (includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
+      params.include_content = includeContent;
+    }
+    return this.post<Evaluation>("evaluations/", evaluation, params);
   }
 
   /**
@@ -237,11 +252,19 @@ export class Mandoline {
   /**
    * Fetches details of a specific evaluation.
    * @param evaluationId - The ID of the evaluation to fetch
+   * @param includeContent - Whether to include content in the response
    * @returns A promise that resolves to the requested Evaluation
    */
-  async getEvaluation(evaluationId: UUID): Promise<Evaluation> {
+  async getEvaluation(
+    evaluationId: UUID,
+    includeContent?: boolean
+  ): Promise<Evaluation> {
     validateId(evaluationId, "Evaluation ID");
-    return this.get<Evaluation>(`evaluations/${evaluationId}`);
+    const params: NullableSerializableDict = {};
+    if (includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
+      params.include_content = includeContent;
+    }
+    return this.get<Evaluation>(`evaluations/${evaluationId}`, params);
   }
 
   /**
@@ -266,15 +289,21 @@ export class Mandoline {
    * Modifies an existing evaluation's properties.
    * @param evaluationId - The ID of the evaluation to update
    * @param update - The updates to apply to the evaluation
+   * @param includeContent - Whether to include content in the response
    * @returns A promise that resolves to the updated Evaluation
    */
   async updateEvaluation(
     evaluationId: UUID,
-    update: EvaluationUpdate
+    update: EvaluationUpdate,
+    includeContent?: boolean
   ): Promise<Evaluation> {
     validateId(evaluationId, "Evaluation ID");
     validateEvaluationUpdate(update);
-    return this.put<Evaluation>(`evaluations/${evaluationId}`, update);
+    const params: NullableSerializableDict = {};
+    if (includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
+      params.include_content = includeContent;
+    }
+    return this.put<Evaluation>(`evaluations/${evaluationId}`, update, params);
   }
 
   /**
