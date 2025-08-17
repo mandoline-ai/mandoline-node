@@ -208,10 +208,7 @@ export class Mandoline {
     includeContent?: boolean
   ): Promise<Evaluation> {
     validateEvaluationCreate(evaluation);
-    const params: NullableSerializableDict = {};
-    if (includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
-      params.include_content = includeContent;
-    }
+    const params = buildIncludeContentParams(includeContent);
     return this.post<Evaluation>("evaluations/", evaluation, params);
   }
 
@@ -260,10 +257,7 @@ export class Mandoline {
     includeContent?: boolean
   ): Promise<Evaluation> {
     validateId(evaluationId, "Evaluation ID");
-    const params: NullableSerializableDict = {};
-    if (includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
-      params.include_content = includeContent;
-    }
+    const params = buildIncludeContentParams(includeContent);
     return this.get<Evaluation>(`evaluations/${evaluationId}`, params);
   }
 
@@ -299,10 +293,7 @@ export class Mandoline {
   ): Promise<Evaluation> {
     validateId(evaluationId, "Evaluation ID");
     validateEvaluationUpdate(update);
-    const params: NullableSerializableDict = {};
-    if (includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
-      params.include_content = includeContent;
-    }
+    const params = buildIncludeContentParams(includeContent);
     return this.put<Evaluation>(`evaluations/${evaluationId}`, update, params);
   }
 
@@ -316,7 +307,7 @@ export class Mandoline {
   }
 }
 
-// Helper function for processing get options
+// Helpers
 
 interface GetOptions {
   skip?: number;
@@ -365,5 +356,15 @@ export function processGetOptions(
     params.filters = JSON.stringify(filters);
   }
 
+  return params;
+}
+
+function buildIncludeContentParams(
+  includeContent?: boolean
+): NullableSerializableDict {
+  const params: NullableSerializableDict = {};
+  if (includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
+    params.include_content = includeContent;
+  }
   return params;
 }
