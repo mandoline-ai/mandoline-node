@@ -423,6 +423,62 @@ describe("Mandoline", () => {
     });
   });
 
+  describe("includeContent parameter", () => {
+    test("includeContent parameter is passed correctly", async () => {
+      const mockEvaluationData = {
+        id: "23f156f6-0572-43a3-a27a-b95724343910",
+        metricId: "ae503bed-4ee9-490e-bc4b-ff1e749d6ff4",
+        prompt: "Test prompt",
+        response: "Test response",
+        score: 0.42,
+        createdAt: "2023-01-01T00:00:00Z",
+        updatedAt: "2023-01-01T00:00:00Z",
+      };
+
+      mockedFetch.mockResolvedValue(new MockResponse(mockEvaluationData));
+
+      // Test createEvaluation with includeContent=true (explicitly set)
+      await mandoline.createEvaluation(
+        {
+          metricId: "ae503bed-4ee9-490e-bc4b-ff1e749d6ff4",
+          prompt: "Test prompt",
+          response: "Test response",
+        },
+        true
+      );
+
+      // Verify include_content=true was added to URL params
+      expect(mockedFetch).toHaveBeenLastCalledWith(
+        expect.stringContaining("include_content=true"),
+        expect.anything()
+      );
+
+      // Test getEvaluation with includeContent=false (explicitly set)
+      await mandoline.getEvaluation(
+        "23f156f6-0572-43a3-a27a-b95724343910",
+        false
+      );
+
+      // Verify include_content=false was added to URL params
+      expect(mockedFetch).toHaveBeenLastCalledWith(
+        expect.stringContaining("include_content=false"),
+        expect.anything()
+      );
+
+      // Test updateEvaluation without includeContent (undefined, should not add param)
+      await mandoline.updateEvaluation(
+        "23f156f6-0572-43a3-a27a-b95724343910",
+        { properties: { updated: true } }
+      );
+
+      // Verify include_content was NOT added to URL params
+      expect(mockedFetch).toHaveBeenLastCalledWith(
+        expect.not.stringContaining("include_content"),
+        expect.anything()
+      );
+    });
+  });
+
   describe("Error handling", () => {
     test("get with limit exceeding max", async () => {
       await expect(

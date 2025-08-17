@@ -363,7 +363,7 @@ function buildIncludeContentParams(
   includeContent?: boolean
 ): NullableSerializableDict {
   const params: NullableSerializableDict = {};
-  if (includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
+  if (includeContent !== undefined) {
     params.include_content = includeContent;
   }
   return params;
