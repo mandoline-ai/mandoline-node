@@ -466,10 +466,9 @@ describe("Mandoline", () => {
       );
 
       // Test updateEvaluation without includeContent (undefined, should not add param)
-      await mandoline.updateEvaluation(
-        "23f156f6-0572-43a3-a27a-b95724343910",
-        { properties: { updated: true } }
-      );
+      await mandoline.updateEvaluation("23f156f6-0572-43a3-a27a-b95724343910", {
+        properties: { updated: true },
+      });
 
       // Verify include_content was NOT added to URL params
       expect(mockedFetch).toHaveBeenLastCalledWith(
