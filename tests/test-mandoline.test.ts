@@ -476,6 +476,34 @@ describe("Mandoline", () => {
         expect.not.stringContaining("include_content"),
         expect.anything()
       );
+
+      // Test batchCreateEvaluations with includeContent=true
+      mockedFetch.mockResolvedValue(new MockResponse([mockEvaluationData]));
+      await mandoline.batchCreateEvaluations(
+        ["ae503bed-4ee9-490e-bc4b-ff1e749d6ff4"],
+        "Test prompt",
+        undefined,
+        "Test response",
+        undefined,
+        undefined,
+        true
+      );
+
+      // Verify include_content=true was added to URL params
+      expect(mockedFetch).toHaveBeenLastCalledWith(
+        expect.stringContaining("include_content=true"),
+        expect.anything()
+      );
+
+      // Test getEvaluations with includeContent=false
+      mockedFetch.mockResolvedValue(new MockResponse([mockEvaluationData]));
+      await mandoline.getEvaluations({ includeContent: false });
+
+      // Verify include_content=false was added to URL params
+      expect(mockedFetch).toHaveBeenLastCalledWith(
+        expect.stringContaining("include_content=false"),
+        expect.anything()
+      );
     });
   });
 
