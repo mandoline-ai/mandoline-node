@@ -11,7 +11,7 @@ import type {
   NullableSerializableDict,
   SerializableDict,
 } from "./types";
-import { makeSerializable, objectToCamelCase } from "./utils";
+import { makeSerializable, objectToCamelCase, omitNotGivenFields } from "./utils";
 
 function processURL(
   apiBaseUrl: string,
@@ -70,7 +70,8 @@ async function processResponse(response: Response): Promise<any> {
   }
 
   const jsonResponse = await response.json();
-  return objectToCamelCase(jsonResponse);
+  const camelCased = objectToCamelCase(jsonResponse);
+  return omitNotGivenFields(camelCased);
 }
 
 type RequestOptions = {

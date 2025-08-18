@@ -51,6 +51,26 @@ export function makeSerializable(data: Record<string, any>): SerializableDict {
   return objectToSnakeCase(serializableData);
 }
 
+export function omitNotGivenFields(obj: SerializableDict): SerializableDict {
+  if (typeof obj !== "object" || obj === null) {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map((v) => omitNotGivenFields(v));
+  }
+
+  return Object.keys(obj).reduce((result, key) => {
+    const value = obj[key];
+    if (value === "NOT_GIVEN") {
+      // Omit fields with "NOT_GIVEN" values
+      return result;
+    }
+    result[key] = omitNotGivenFields(value);
+    return result;
+  }, {} as SerializableDict);
+}
+
 export function safeJSONParse(text: string): any {
   try {
     return JSON.parse(text);
