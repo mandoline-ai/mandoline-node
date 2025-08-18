@@ -1,7 +1,6 @@
 import {
   CONNECT_TIMEOUT,
   DEFAULT_GET_LIMIT,
-  DEFAULT_INCLUDE_EVALUATION_CONTENT,
   MANDOLINE_API_BASE_URL,
   MAX_GET_LIMIT,
   RWP_TIMEOUT,
@@ -329,7 +328,7 @@ export function processGetOptions(
     limit: options?.limit ?? DEFAULT_GET_LIMIT,
   };
 
-  if (options?.includeContent === !DEFAULT_INCLUDE_EVALUATION_CONTENT) {
+  if (options?.includeContent !== undefined) {
     params.include_content = options.includeContent;
   }
 
