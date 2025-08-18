@@ -220,6 +220,7 @@ export class Mandoline {
    * @param response - The response to evaluate. Can be undefined only when images are provided
    * @param response_image - Optional image associated with the response
    * @param properties - Optional properties to include with the evaluation
+   * @param includeContent - Whether to include content in the response
    * @returns A promise that resolves to an array of created Evaluations
    */
   async batchCreateEvaluations(
@@ -228,7 +229,8 @@ export class Mandoline {
     prompt_image?: string,
     response?: string,
     response_image?: string,
-    properties?: NullableSerializableDict
+    properties?: NullableSerializableDict,
+    includeContent?: boolean
   ): Promise<Evaluation[]> {
     const evaluationPromises = metricIds.map(async (metricId) => {
       const evaluationCreate: EvaluationCreate = {
@@ -240,7 +242,7 @@ export class Mandoline {
         properties,
       };
       validateEvaluationCreate(evaluationCreate);
-      return this.createEvaluation(evaluationCreate);
+      return this.createEvaluation(evaluationCreate, includeContent);
     });
 
     return await Promise.all(evaluationPromises);
