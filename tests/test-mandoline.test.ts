@@ -202,14 +202,20 @@ describe("Mandoline", () => {
         "73210187-84bc-4b95-ae75-5de0ad0e937c",
       ];
 
-      const evaluations = await mandoline.batchCreateEvaluations(
-        metricIds,
-        "Test prompt",
-        undefined,
-        "Test response",
-        undefined,
-        { key: "value" }
-      );
+      const evaluations = await mandoline.batchCreateEvaluations([
+        {
+          metricId: metricIds[0],
+          prompt: "Test prompt",
+          response: "Test response",
+          properties: { key: "value" }
+        },
+        {
+          metricId: metricIds[1],
+          prompt: "Test prompt",
+          response: "Test response",
+          properties: { key: "value" }
+        }
+      ]);
 
       expect(evaluations).toHaveLength(2);
       expect(evaluations[0]).toEqual(
@@ -478,15 +484,13 @@ describe("Mandoline", () => {
 
       // Test batchCreateEvaluations with includeContent=true
       mockedFetch.mockResolvedValue(new MockResponse([mockEvaluationData]));
-      await mandoline.batchCreateEvaluations(
-        ["ae503bed-4ee9-490e-bc4b-ff1e749d6ff4"],
-        "Test prompt",
-        undefined,
-        "Test response",
-        undefined,
-        undefined,
-        true
-      );
+      await mandoline.batchCreateEvaluations([
+        {
+          metricId: "ae503bed-4ee9-490e-bc4b-ff1e749d6ff4",
+          prompt: "Test prompt",
+          response: "Test response"
+        }
+      ], true);
 
       // Verify include_content=true was added to URL params
       expect(mockedFetch).toHaveBeenLastCalledWith(
