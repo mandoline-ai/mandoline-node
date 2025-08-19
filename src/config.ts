@@ -6,8 +6,6 @@ export const MAX_GET_LIMIT = 1000;
 export const CONNECT_TIMEOUT = 300000; // 5 minutes
 export const RWP_TIMEOUT = 300000; // 5 minutes
 
-export const DEFAULT_INCLUDE_EVALUATION_CONTENT = true;
-
 export interface MandolineRequestConfig {
   /**
    * The base URL for the Mandoline API.
