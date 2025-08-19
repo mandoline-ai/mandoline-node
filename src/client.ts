@@ -212,36 +212,18 @@ export class Mandoline {
   }
 
   /**
-   * Performs evaluations across multiple metrics for a given prompt-response pair (convenience method).
-   * @param metricIds - The list of metric IDs to evaluate against
-   * @param prompt - The prompt to evaluate
-   * @param prompt_image - Optional image associated with the prompt
-   * @param response - The response to evaluate. Can be undefined only when images are provided
-   * @param response_image - Optional image associated with the response
-   * @param properties - Optional properties to include with the evaluation
+   * Creates multiple evaluations in a batch (convenience method).
+   * @param evaluations - The list of evaluations to create
    * @param includeContent - Whether to include content in the response
    * @returns A promise that resolves to an array of created Evaluations
    */
   async batchCreateEvaluations(
-    metricIds: UUID[],
-    prompt: string,
-    prompt_image?: string,
-    response?: string,
-    response_image?: string,
-    properties?: NullableSerializableDict,
+    evaluations: EvaluationCreate[],
     includeContent?: boolean
   ): Promise<Evaluation[]> {
-    const evaluationPromises = metricIds.map(async (metricId) => {
-      const evaluationCreate: EvaluationCreate = {
-        metricId,
-        prompt,
-        prompt_image,
-        response,
-        response_image,
-        properties,
-      };
-      validateEvaluationCreate(evaluationCreate);
-      return this.createEvaluation(evaluationCreate, includeContent);
+    const evaluationPromises = evaluations.map(async (evaluation) => {
+      validateEvaluationCreate(evaluation);
+      return this.createEvaluation(evaluation, includeContent);
     });
 
     return await Promise.all(evaluationPromises);
