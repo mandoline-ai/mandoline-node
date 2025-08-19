@@ -1,14 +1,14 @@
-import { Response } from "node-fetch";
+import { Response } from 'node-fetch';
 
-import { safeJSONParse } from "./utils";
+import { safeJSONParse } from './utils';
 
 export enum MandolineErrorType {
-  ValidationError = "ValidationError",
-  RateLimitExceeded = "RateLimitExceeded",
-  TimeoutError = "TimeoutError",
-  HTTPError = "HTTPError",
-  RequestError = "RequestError",
-  GenericError = "GenericError",
+  ValidationError = 'ValidationError',
+  RateLimitExceeded = 'RateLimitExceeded',
+  TimeoutError = 'TimeoutError',
+  HTTPError = 'HTTPError',
+  RequestError = 'RequestError',
+  GenericError = 'GenericError',
 }
 
 interface BaseErrorDetails {
@@ -70,7 +70,7 @@ export class MandolineError extends Error {
 }
 
 export class ValidationError extends MandolineError {
-  constructor(message: string, errors: string = "Unknown validation error") {
+  constructor(message: string, errors: string = 'Unknown validation error') {
     super({
       type: MandolineErrorType.ValidationError,
       message,
@@ -109,18 +109,18 @@ async function createHTTPErrorDetails(
     case MandolineErrorType.ValidationError:
       return {
         type,
-        message: message || "Validation error",
-        errors: additional_info?.errors || "Unknown validation error",
+        message: message || 'Validation error',
+        errors: additional_info?.errors || 'Unknown validation error',
       };
     case MandolineErrorType.RateLimitExceeded:
       return {
         type,
-        message: message || "Rate limit exceeded",
+        message: message || 'Rate limit exceeded',
       };
     case MandolineErrorType.RequestError:
       return {
         type,
-        message: message || "Request error occurred",
+        message: message || 'Request error occurred',
         request: {
           url: additional_info?.request?.url || response.url,
           method: additional_info?.request?.method || response.type,
@@ -140,11 +140,11 @@ async function createHTTPErrorDetails(
 }
 
 function createErrorDetails(error: Error): MandolineErrorDetails {
-  if (error.name === "AbortError") {
+  if (error.name === 'AbortError') {
     return {
       type: MandolineErrorType.TimeoutError,
       message:
-        "The request timed out. The API might be slow or unresponsive. Please try again later.",
+        'The request timed out. The API might be slow or unresponsive. Please try again later.',
     };
   } else {
     return {

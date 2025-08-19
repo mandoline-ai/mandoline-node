@@ -2,16 +2,20 @@ import fetch, {
   HeadersInit,
   RequestInit as NodeFetchRequestInit,
   Response,
-} from "node-fetch";
+} from 'node-fetch';
 
-import type { MandolineRequestConfig } from "./config";
-import { handleError } from "./errors";
+import type { MandolineRequestConfig } from './config';
+import { handleError } from './errors';
 import type {
   Headers,
   NullableSerializableDict,
   SerializableDict,
-} from "./types";
-import { makeSerializable, objectToCamelCase, omitNotGivenFields } from "./utils";
+} from './types';
+import {
+  makeSerializable,
+  objectToCamelCase,
+  omitNotGivenFields,
+} from './utils';
 
 function processURL(
   apiBaseUrl: string,
@@ -75,7 +79,7 @@ async function processResponse(response: Response): Promise<any> {
 }
 
 type RequestOptions = {
-  method: "GET" | "POST" | "PUT" | "DELETE";
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   endpoint: string;
   authHeader: Headers;
   params?: NullableSerializableDict;
@@ -91,7 +95,7 @@ export async function makeRequest<T>(
   const url = processURL(config.apiBaseUrl, endpoint, params);
   const headers: HeadersInit = {
     ...authHeader,
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
   const body = processRequestBody(data);
 

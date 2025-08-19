@@ -1,9 +1,9 @@
-import { DEFAULT_GET_LIMIT } from "./config";
+import { DEFAULT_GET_LIMIT } from './config';
 import type {
   NullableSerializableDict,
   NullableStringArray,
   UUID,
-} from "./types";
+} from './types';
 
 interface MetricGetOptions {
   skip?: number;
@@ -24,7 +24,7 @@ export function processMetricGetOptions(
       options.tags === null ||
       (Array.isArray(options.tags) && options.tags.length === 0)
     ) {
-      params.tags = "null"; // Both null and [] mean "get metrics with no tags"
+      params.tags = 'null'; // Both null and [] mean "get metrics with no tags"
     } else if (Array.isArray(options.tags)) {
       params.tags = options.tags;
     }
@@ -52,7 +52,7 @@ export function processEvaluationGetOptions(
   if (options?.properties !== undefined) {
     if (
       options.properties === null ||
-      (typeof options.properties === "object" &&
+      (typeof options.properties === 'object' &&
         Object.keys(options.properties).length === 0)
     ) {
       params.properties = JSON.stringify(null); // Both null and {} mean "get evaluations with no properties"
@@ -68,7 +68,7 @@ export function processEvaluationGetOptions(
   if (options?.filters !== undefined) {
     if (
       options.filters === null ||
-      (typeof options.filters === "object" &&
+      (typeof options.filters === 'object' &&
         Object.keys(options.filters).length === 0)
     ) {
       filters.no_filters = true; // Indicate that we explicitly want no filters

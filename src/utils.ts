@@ -1,6 +1,6 @@
-import type { SerializableDict } from "./types";
+import type { SerializableDict } from './types';
 
-const SKIP_KEYS = ["properties"]; // hack - don't modify user input case
+const SKIP_KEYS = ['properties']; // hack - don't modify user input case
 
 function toCamelCase(str: string): string {
   return str.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
@@ -11,7 +11,7 @@ function toSnakeCase(str: string): string {
 }
 
 export function objectToCamelCase(obj: SerializableDict): SerializableDict {
-  if (typeof obj !== "object" || obj === null) {
+  if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
 
@@ -29,7 +29,7 @@ export function objectToCamelCase(obj: SerializableDict): SerializableDict {
 }
 
 export function objectToSnakeCase(obj: SerializableDict): SerializableDict {
-  if (typeof obj !== "object" || obj === null) {
+  if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
 
@@ -52,7 +52,7 @@ export function makeSerializable(data: Record<string, any>): SerializableDict {
 }
 
 export function omitNotGivenFields(obj: SerializableDict): SerializableDict {
-  if (typeof obj !== "object" || obj === null) {
+  if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
 
@@ -62,7 +62,7 @@ export function omitNotGivenFields(obj: SerializableDict): SerializableDict {
 
   return Object.keys(obj).reduce((result, key) => {
     const value = obj[key];
-    if (value === "NOT_GIVEN") {
+    if (value === 'NOT_GIVEN') {
       // Omit fields with "NOT_GIVEN" values
       return result;
     }
