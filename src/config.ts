@@ -1,4 +1,4 @@
-export const MANDOLINE_API_BASE_URL = "https://mandoline-api.fly.dev/v1";
+export const MANDOLINE_API_BASE_URL = 'https://mandoline-api.fly.dev/v1';
 
 export const DEFAULT_GET_LIMIT = 100;
 export const MAX_GET_LIMIT = 1000;

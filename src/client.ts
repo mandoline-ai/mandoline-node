@@ -6,8 +6,8 @@ import {
   RWP_TIMEOUT,
   type MandolineClientOptions,
   type MandolineRequestConfig,
-} from "./config";
-import { makeRequest } from "./connection-manager";
+} from './config';
+import { makeRequest } from './connection-manager';
 import type {
   Evaluation,
   EvaluationCreate,
@@ -15,14 +15,14 @@ import type {
   Metric,
   MetricCreate,
   MetricUpdate,
-} from "./models";
+} from './models';
 import type {
   Headers,
   NullableSerializableDict,
   NullableStringArray,
   SerializableDict,
   UUID,
-} from "./types";
+} from './types';
 import {
   validateEvaluationCreate,
   validateEvaluationsGet,
@@ -31,7 +31,7 @@ import {
   validateMetricCreate,
   validateMetricsGet,
   validateMetricUpdate,
-} from "./validation";
+} from './validation';
 
 /**
  * Mandoline client for interacting with the Mandoline API.
@@ -51,7 +51,7 @@ export class Mandoline {
    * @throws {Error} If no API key is provided and the environment variable is not set.
    */
   constructor(options: MandolineClientOptions = {}) {
-    this.apiKey = options?.apiKey || process.env.MANDOLINE_API_KEY || "";
+    this.apiKey = options?.apiKey || process.env.MANDOLINE_API_KEY || '';
 
     this.requestConfig = {
       apiBaseUrl:
@@ -66,10 +66,10 @@ export class Mandoline {
   protected getAuthHeader(): Headers {
     if (!this.apiKey) {
       throw new Error(
-        "Mandoline API key required. Set MANDOLINE_API_KEY environment variable or create one at https://mandoline.ai/account"
+        'Mandoline API key required. Set MANDOLINE_API_KEY environment variable or create one at https://mandoline.ai/account'
       );
     }
-    return { "X-API-KEY": this.apiKey };
+    return { 'X-API-KEY': this.apiKey };
   }
 
   protected async get<T>(
@@ -82,7 +82,7 @@ export class Mandoline {
       );
     }
     return makeRequest<T>(this.requestConfig, {
-      method: "GET",
+      method: 'GET',
       endpoint,
       authHeader: this.getAuthHeader(),
       params,
@@ -95,7 +95,7 @@ export class Mandoline {
     params?: NullableSerializableDict
   ): Promise<T> {
     return makeRequest<T>(this.requestConfig, {
-      method: "POST",
+      method: 'POST',
       endpoint,
       authHeader: this.getAuthHeader(),
       data,
@@ -109,7 +109,7 @@ export class Mandoline {
     params?: NullableSerializableDict
   ): Promise<T> {
     return makeRequest<T>(this.requestConfig, {
-      method: "PUT",
+      method: 'PUT',
       endpoint,
       authHeader: this.getAuthHeader(),
       data,
@@ -119,7 +119,7 @@ export class Mandoline {
 
   protected async delete<T>(endpoint: string): Promise<T> {
     return makeRequest<T>(this.requestConfig, {
-      method: "DELETE",
+      method: 'DELETE',
       endpoint,
       authHeader: this.getAuthHeader(),
     });
@@ -132,7 +132,7 @@ export class Mandoline {
    */
   async createMetric(metric: MetricCreate): Promise<Metric> {
     validateMetricCreate(metric);
-    return this.post<Metric>("metrics/", metric);
+    return this.post<Metric>('metrics/', metric);
   }
 
   /**
@@ -155,7 +155,7 @@ export class Mandoline {
    * @returns A promise that resolves to the requested Metric
    */
   async getMetric(metricId: UUID): Promise<Metric> {
-    validateId(metricId, "Metric ID");
+    validateId(metricId, 'Metric ID');
     return this.get<Metric>(`metrics/${metricId}`);
   }
 
@@ -172,7 +172,7 @@ export class Mandoline {
   }): Promise<Metric[]> {
     validateMetricsGet(options);
     const params = processGetOptions(options);
-    return this.get<Metric[]>("metrics/", params);
+    return this.get<Metric[]>('metrics/', params);
   }
 
   /**
@@ -182,7 +182,7 @@ export class Mandoline {
    * @returns A promise that resolves to the updated Metric
    */
   async updateMetric(metricId: UUID, update: MetricUpdate): Promise<Metric> {
-    validateId(metricId, "Metric ID");
+    validateId(metricId, 'Metric ID');
     validateMetricUpdate(update);
     return this.put<Metric>(`metrics/${metricId}`, update);
   }
@@ -192,7 +192,7 @@ export class Mandoline {
    * @param metricId - The ID of the metric to delete
    */
   async deleteMetric(metricId: UUID): Promise<void> {
-    validateId(metricId, "Metric ID");
+    validateId(metricId, 'Metric ID');
     await this.delete<void>(`metrics/${metricId}`);
   }
 
@@ -208,7 +208,7 @@ export class Mandoline {
   ): Promise<Evaluation> {
     validateEvaluationCreate(evaluation);
     const params = buildIncludeContentParams(includeContent);
-    return this.post<Evaluation>("evaluations/", evaluation, params);
+    return this.post<Evaluation>('evaluations/', evaluation, params);
   }
 
   /**
@@ -257,7 +257,7 @@ export class Mandoline {
     evaluationId: UUID,
     includeContent?: boolean
   ): Promise<Evaluation> {
-    validateId(evaluationId, "Evaluation ID");
+    validateId(evaluationId, 'Evaluation ID');
     const params = buildIncludeContentParams(includeContent);
     return this.get<Evaluation>(`evaluations/${evaluationId}`, params);
   }
@@ -277,7 +277,7 @@ export class Mandoline {
   }): Promise<Evaluation[]> {
     validateEvaluationsGet(options);
     const params = processGetOptions(options);
-    return this.get<Evaluation[]>("evaluations/", params);
+    return this.get<Evaluation[]>('evaluations/', params);
   }
 
   /**
@@ -292,7 +292,7 @@ export class Mandoline {
     update: EvaluationUpdate,
     includeContent?: boolean
   ): Promise<Evaluation> {
-    validateId(evaluationId, "Evaluation ID");
+    validateId(evaluationId, 'Evaluation ID');
     validateEvaluationUpdate(update);
     const params = buildIncludeContentParams(includeContent);
     return this.put<Evaluation>(`evaluations/${evaluationId}`, update, params);
@@ -303,7 +303,7 @@ export class Mandoline {
    * @param evaluationId - The ID of the evaluation to delete
    */
   async deleteEvaluation(evaluationId: UUID): Promise<void> {
-    validateId(evaluationId, "Evaluation ID");
+    validateId(evaluationId, 'Evaluation ID');
     await this.delete<void>(`evaluations/${evaluationId}`);
   }
 }
@@ -347,8 +347,8 @@ export function processGetOptions(
   }
 
   if (options?.filters !== undefined) {
-    if (typeof options.filters !== "object") {
-      throw new Error("filters must be a dictionary");
+    if (typeof options.filters !== 'object') {
+      throw new Error('filters must be a dictionary');
     }
     Object.assign(filters, options.filters);
   }

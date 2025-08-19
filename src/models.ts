@@ -2,7 +2,7 @@ import type {
   NullableSerializableDict,
   NullableStringArray,
   UUID,
-} from "./types";
+} from './types';
 
 interface IDAndTimestampsMixin {
   id: UUID;
@@ -16,7 +16,7 @@ interface MetricBase {
   tags?: NullableStringArray;
 }
 
-export interface MetricCreate extends MetricBase {}
+export type MetricCreate = MetricBase;
 
 export interface MetricUpdate {
   name?: string;
@@ -35,7 +35,7 @@ interface EvaluationBase {
   properties?: NullableSerializableDict;
 }
 
-export interface EvaluationCreate extends EvaluationBase {}
+export type EvaluationCreate = EvaluationBase;
 
 export interface EvaluationUpdate {
   properties?: NullableSerializableDict;

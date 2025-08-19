@@ -1,5 +1,5 @@
-import { Mandoline } from "./client";
-import { MandolineClientOptions, MandolineRequestConfig } from "./config";
+import { Mandoline } from './client';
+import { MandolineClientOptions, MandolineRequestConfig } from './config';
 import type {
   HTTPErrorDetails,
   MandolineErrorDetails,
@@ -7,8 +7,8 @@ import type {
   RequestErrorDetails,
   TimeoutErrorDetails,
   ValidationErrorDetails,
-} from "./errors";
-import { MandolineError, MandolineErrorType } from "./errors";
+} from './errors';
+import { MandolineError, MandolineErrorType } from './errors';
 import type {
   Evaluation,
   EvaluationCreate,
@@ -16,14 +16,14 @@ import type {
   Metric,
   MetricCreate,
   MetricUpdate,
-} from "./models";
+} from './models';
 import type {
   Headers,
   NullableSerializableDict,
   NullableStringArray,
   SerializableDict,
   UUID,
-} from "./types";
+} from './types';
 
 // Client and client configuration
 export { Mandoline, MandolineClientOptions, MandolineRequestConfig };
