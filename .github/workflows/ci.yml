@@ -27,6 +27,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify package-lock is up to date
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          LOCK_VERSION=$(node -p "require('./package-lock.json').version")
+          if [ "$PKG_VERSION" != "$LOCK_VERSION" ]; then
+            echo "❌ Version mismatch: package.json ($PKG_VERSION) != package-lock.json ($LOCK_VERSION)"
+            exit 1
+          fi
+          echo "✅ Package versions match: $PKG_VERSION"
+
       - name: Check code formatting
         run: npm run format:check
 
