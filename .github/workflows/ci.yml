@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
@@ -22,29 +22,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          cache: 'npm'
+
+      - name: Verify package-lock is up to date
+        run: |
+          npm install --package-lock-only
+          git diff --exit-code package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify package-lock is up to date
-        run: |
-          PKG_VERSION=$(node -p "require('./package.json').version")
-          LOCK_VERSION=$(node -p "require('./package-lock.json').version")
-          if [ "$PKG_VERSION" != "$LOCK_VERSION" ]; then
-            echo "❌ Version mismatch: package.json ($PKG_VERSION) != package-lock.json ($LOCK_VERSION)"
-            exit 1
-          fi
-          echo "✅ Package versions match: $PKG_VERSION"
-
-      - name: Check code formatting
-        run: npm run format:check
-
-      - name: Run linting
-        run: npm run lint
-
-      - name: Type checking
-        run: npm run build
-
-      - name: Run tests
-        run: npm test
+      - name: Run all checks
+        run: npm run check
